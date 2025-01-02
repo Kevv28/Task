@@ -47,7 +47,7 @@ const Login = () => {
         </form>
         <p>
           Not Registered Yet?{' '}
-          <a href="/register">
+          <a href="/Register">
             Create an account
           </a>
         </p>
