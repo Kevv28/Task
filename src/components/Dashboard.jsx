@@ -9,7 +9,7 @@ const Dashboard = () => {
   useEffect(() => {
     const loggedInUser = localStorage.getItem('user');
     if (!loggedInUser) {
-      navigate('/login'); // Redirect to login if not authenticated
+      navigate('/login');
     } else {
       setUserData(JSON.parse(loggedInUser));
     }
@@ -17,11 +17,11 @@ const Dashboard = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('user');
-    navigate('/'); // Redirect to home page
+    navigate('/');
   };
 
   if (!userData) {
-    return null; // Show nothing until userData is loaded
+    return null; 
   }
 
   return (
