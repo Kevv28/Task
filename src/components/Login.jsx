@@ -8,47 +8,76 @@ const Login = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  // Dummy user database
   const users = [
-    { email: 'test@example.com', password: 'password123' },
-    { email: 'user@example.com', password: 'userpass' },
+    {
+      email: 'test@example.com',
+      password: 'password123',
+    },
+    {
+      email: 'user@example.com',
+      password: 'userpass',
+    },
   ];
 
   const handleLogin = (e) => {
     e.preventDefault();
 
-    const user = users.find(
-      (u) => u.email === email && u.password === password
-    );
+    // Find user in the dummy database
+    const user = users.find((u) => u.email === email);
 
     if (user) {
-      localStorage.setItem('user', JSON.stringify({ email }));
-      navigate('/dashboard');
+      if (user.password === password) {
+        // Correct credentials
+        localStorage.setItem('user', JSON.stringify({ email }));
+        setError('');
+        navigate('/dashboard');
+      } else {
+        // Incorrect password
+        setError('Invalid password.');
+      }
     } else {
-      setError('Invalid email or password.');
+      // No matching user
+      setError('Invalid email.');
     }
   };
 
   return (
     <div className="auth-page">
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        <button type="submit">Login</button>
-      </form>
+      <div className="auth-left">
+        <h1>Welcome</h1>
+      </div>
+      <div className="auth-right">
+        <h2>Login to your Account</h2>
+        <form className="auth-form" onSubmit={handleLogin}>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          {error && <p className="error-message">{error}</p>} {/* Display error */}
+          <div className="auth-options">
+            <label>
+              <input type="checkbox" /> Remember Me
+            </label>
+            <a href="/forgot-password">Forgot Password?</a>
+          </div>
+          <button type="submit">Login</button>
+        </form>
+        <p>
+          Not Registered Yet?{' '}
+          <a href="/register">Create an account</a>
+        </p>
+      </div>
     </div>
   );
 };
