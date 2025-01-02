@@ -8,40 +8,39 @@ const Login = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // Dummy user database
-  const users = [
-    { email: 'test@example.com', password: 'password123' },
-    { email: 'user@example.com', password: 'userpass' },
-  ];
+  // Example: Prepopulate localStorage with dummy users for testing
+  if (!localStorage.getItem('users')) {
+    const dummyUsers = [
+      { email: 'test@example.com', password: 'password123' },
+      { email: 'user@example.com', password: 'userpass' },
+    ];
+    localStorage.setItem('users', JSON.stringify(dummyUsers));
+  }
 
   const handleLogin = (e) => {
     e.preventDefault();
 
-    // Logging the inputs for debugging
-    console.log('Entered Email:', email);
-    console.log('Entered Password:', password);
+    // Retrieve users from localStorage
+    const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
 
-    // Find user by email
-    const user = users.find((u) => u.email.trim().toLowerCase() === email.trim().toLowerCase());
+    // Find the user by email
+    const user = storedUsers.find((u) => u.email === email);
 
     if (!user) {
       setError('Invalid email.');
-      console.log('User not found.');
       return;
     }
 
     // Check if the password matches
     if (user.password !== password) {
       setError('Invalid password.');
-      console.log('Password does not match.');
       return;
     }
 
     // Successful login
-    localStorage.setItem('user', JSON.stringify({ email: user.email }));
+    localStorage.setItem('currentUser', JSON.stringify({ email }));
     setError('');
-    console.log('Login successful. Redirecting to dashboard...');
-    navigate('/dashboard');
+    navigate('/dashboard'); // Redirect to the dashboard
   };
 
   return (
@@ -66,7 +65,7 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          {error && <p className="error-message">{error}</p>} {/* Display error */}
+          {error && <p className="error-message">{error}</p>}
           <div className="auth-options">
             <label>
               <input type="checkbox" /> Remember Me
@@ -85,4 +84,3 @@ const Login = () => {
 };
 
 export default Login;
-
