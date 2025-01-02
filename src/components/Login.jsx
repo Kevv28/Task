@@ -1,6 +1,6 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Register from './Register'; // Import the Register component
 import './Auth.css';
 
 const Login = () => {
@@ -10,30 +10,32 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    navigate('/dashboard');
+    // Save user data in localStorage for persistence (if required)
+    localStorage.setItem('user', JSON.stringify({ email }));
+    navigate('/dashboard'); // Navigate to the dashboard
   };
 
   return (
     <div className="auth-page">
       <div className="auth-left">
-        <h1>Welcome</h1>    
+        <h1>Welcome</h1>
       </div>
       <div className="auth-right">
         <h2>Login to your Account</h2>
         <form className="auth-form" onSubmit={handleLogin}>
-          <input 
-            type="email" 
-            placeholder="Email" 
-            value={email} 
-            onChange={(e) => setEmail(e.target.value)} 
-            required 
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
           />
-          <input 
-            type="password" 
-            placeholder="Password" 
-            value={password} 
-            onChange={(e) => setPassword(e.target.value)} 
-            required 
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
           />
           <div className="auth-options">
             <label>
@@ -44,18 +46,14 @@ const Login = () => {
           <button type="submit">Login</button>
         </form>
         <p>
-          Not Registered Yet? <a href="/register">Create an account</a>
+          Not Registered Yet?{' '}
+          <a href="/register">
+            Create an account
+          </a>
         </p>
-
-        {/* Example Usage of Register Component */}
-        <div className="register-preview">
-          <h3>Register Preview:</h3>
-          <Register />
-        </div>
       </div>
     </div>
   );
 };
 
 export default Login;
-
