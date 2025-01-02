@@ -10,9 +10,9 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    // Save user data in localStorage for persistence (if required)
+   
     localStorage.setItem('user', JSON.stringify({ email }));
-    navigate('/dashboard'); // Navigate to the dashboard
+    navigate('/dashboard'); 
   };
 
   return (
