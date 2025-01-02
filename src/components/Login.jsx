@@ -8,39 +8,49 @@ const Login = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // Example: Prepopulate localStorage with dummy users for testing
+  // Ensure `users` exists in localStorage
   if (!localStorage.getItem('users')) {
-    const dummyUsers = [
-      { email: 'test@example.com', password: 'password123' },
-      { email: 'user@example.com', password: 'userpass' },
-    ];
-    localStorage.setItem('users', JSON.stringify(dummyUsers));
+    localStorage.setItem('users', JSON.stringify([]));
   }
 
   const handleLogin = (e) => {
     e.preventDefault();
 
-    // Retrieve users from localStorage
+    // Retrieve the users list from localStorage
     const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
 
-    // Find the user by email
+    // Find a matching user
     const user = storedUsers.find((u) => u.email === email);
 
     if (!user) {
-      setError('Invalid email.');
+      setError('Email not found. Please register first.');
       return;
     }
 
-    // Check if the password matches
     if (user.password !== password) {
       setError('Invalid password.');
       return;
     }
 
-    // Successful login
-    localStorage.setItem('currentUser', JSON.stringify({ email }));
+    // Login successful
+    localStorage.setItem('user', JSON.stringify({ fullName: 'kevil', email }));
     setError('');
-    navigate('/dashboard'); // Redirect to the dashboard
+    navigate('/dashboard'); // Redirect to dashboard
+  };
+
+  const handleRegister = () => {
+    const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
+
+    // Check if user already exists
+    if (storedUsers.find((u) => u.email === email)) {
+      setError('Email already registered. Please login.');
+      return;
+    }
+
+    // Add new user to the users list
+    storedUsers.push({ email, password });
+    localStorage.setItem('users', JSON.stringify(storedUsers));
+    setError('Registration successful! Please login.');
   };
 
   return (
@@ -74,13 +84,12 @@ const Login = () => {
           </div>
           <button type="submit">Login</button>
         </form>
-        <p>
-          Not Registered Yet?{' '}
-          <a href="/register">Create an account</a>
-        </p>
+        <p>Not Registered Yet?</p>
+        <button onClick={handleRegister}>Register</button>
       </div>
     </div>
   );
 };
 
 export default Login;
+
