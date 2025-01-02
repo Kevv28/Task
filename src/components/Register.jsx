@@ -20,7 +20,7 @@ const Register = () => {
 
     localStorage.setItem('user', JSON.stringify({ fullName, email }));
     setError('');
-    navigate('/login'); // Navigate to login after successful registration
+    navigate('/login');
   };
 
   return (
