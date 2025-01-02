@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Auth.css';
@@ -6,13 +5,38 @@ import './Auth.css';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
+
+  // Dummy user database
+  const users = [
+    {
+      email: 'test@example.com',
+      password: 'password123',
+    },
+    {
+      email: 'user@example.com',
+      password: 'userpass',
+    },
+  ];
 
   const handleLogin = (e) => {
     e.preventDefault();
-   
-    localStorage.setItem('user', JSON.stringify({ email }));
-    navigate('/dashboard'); 
+
+    // Find user in the dummy database
+    const user = users.find(
+      (u) => u.email === email && u.password === password
+    );
+
+    if (user) {
+      // If user exists and credentials match
+      localStorage.setItem('user', JSON.stringify({ email }));
+      setError(''); // Clear any previous error
+      navigate('/dashboard'); // Navigate to the dashboard
+    } else {
+      // If credentials are invalid
+      setError('Invalid email or password.');
+    }
   };
 
   return (
@@ -37,6 +61,7 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+          {error && <p className="error-message">{error}</p>} {/* Display error */}
           <div className="auth-options">
             <label>
               <input type="checkbox" /> Remember Me
@@ -47,7 +72,7 @@ const Login = () => {
         </form>
         <p>
           Not Registered Yet?{' '}
-          <a href="/Register">
+          <a href="/register">
             Create an account
           </a>
         </p>
