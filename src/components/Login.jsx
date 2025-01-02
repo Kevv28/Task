@@ -8,18 +8,13 @@ const Login = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // Ensure `users` exists in localStorage
-  if (!localStorage.getItem('users')) {
-    localStorage.setItem('users', JSON.stringify([]));
-  }
-
   const handleLogin = (e) => {
     e.preventDefault();
 
-    // Retrieve the users list from localStorage
+    // Retrieve users from localStorage
     const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
 
-    // Find a matching user
+    // Find user by email
     const user = storedUsers.find((u) => u.email === email);
 
     if (!user) {
@@ -36,21 +31,6 @@ const Login = () => {
     localStorage.setItem('user', JSON.stringify({ fullName: 'kevil', email }));
     setError('');
     navigate('/dashboard'); // Redirect to dashboard
-  };
-
-  const handleRegister = () => {
-    const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
-
-    // Check if user already exists
-    if (storedUsers.find((u) => u.email === email)) {
-      setError('Email already registered. Please login.');
-      return;
-    }
-
-    // Add new user to the users list
-    storedUsers.push({ email, password });
-    localStorage.setItem('users', JSON.stringify(storedUsers));
-    setError('Registration successful! Please login.');
   };
 
   return (
@@ -84,12 +64,15 @@ const Login = () => {
           </div>
           <button type="submit">Login</button>
         </form>
-        <p>Not Registered Yet?</p>
-        <button onClick={handleRegister}>Register</button>
+        <p>
+          Not Registered Yet?{' '}
+          <a href="/register">Create an account</a>
+        </p>
       </div>
     </div>
   );
 };
 
 export default Login;
+
 
