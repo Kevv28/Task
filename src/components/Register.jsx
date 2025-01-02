@@ -12,23 +12,22 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (password !== confirmPassword) {
-      setError("Passwords do not match!");
+      setError('Passwords do not match!');
       return;
     }
 
     localStorage.setItem('user', JSON.stringify({ fullName, email }));
     setError('');
-    navigate('/login');
+    navigate('/login'); // Navigate to login after successful registration
   };
 
   return (
     <div className="auth-page">
       <div className="auth-left">
         <h1>Welcome to Our Community</h1>
-        <p>
-          Sign up to explore the best tools and resources to bring your ideas to life.
-        </p>
+        <p>Sign up to explore the best tools and resources to bring your ideas to life.</p>
       </div>
       <div className="auth-right">
         <h2>Create Your Account</h2>
@@ -65,7 +64,13 @@ const Register = () => {
           <button type="submit">Register</button>
         </form>
         <p>
-          Already have an account? <a href="/login">Login</a>
+          Already have an account?{' '}
+          <button
+            onClick={() => navigate('/login')}
+            className="link-button"
+          >
+            Login
+          </button>
         </p>
       </div>
     </div>
@@ -73,3 +78,4 @@ const Register = () => {
 };
 
 export default Register;
+
