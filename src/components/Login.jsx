@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Register from './Register'; // Import the Register component
 import './Auth.css';
 
 const Login = () => {
@@ -45,9 +46,16 @@ const Login = () => {
         <p>
           Not Registered Yet? <a href="/register">Create an account</a>
         </p>
+
+        {/* Example Usage of Register Component */}
+        <div className="register-preview">
+          <h3>Register Preview:</h3>
+          <Register />
+        </div>
       </div>
     </div>
   );
 };
 
 export default Login;
+
