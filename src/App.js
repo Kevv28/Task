@@ -5,8 +5,6 @@ import Register from './components/Register';
 import Dashboard from './components/Dashboard';
 import About from './components/About';
 
-
-
 function App() {
   return (
     <div className="App">
@@ -25,3 +23,4 @@ function App() {
 }
 
 export default App;
+
