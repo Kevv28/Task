@@ -10,36 +10,38 @@ const Login = () => {
 
   // Dummy user database
   const users = [
-    {
-      email: 'test@example.com',
-      password: 'password123',
-    },
-    {
-      email: 'user@example.com',
-      password: 'userpass',
-    },
+    { email: 'test@example.com', password: 'password123' },
+    { email: 'user@example.com', password: 'userpass' },
   ];
 
   const handleLogin = (e) => {
     e.preventDefault();
 
-    // Find user in the dummy database
-    const user = users.find((u) => u.email === email);
+    // Logging the inputs for debugging
+    console.log('Entered Email:', email);
+    console.log('Entered Password:', password);
 
-    if (user) {
-      if (user.password === password) {
-        // Correct credentials
-        localStorage.setItem('user', JSON.stringify({ email }));
-        setError('');
-        navigate('/dashboard');
-      } else {
-        // Incorrect password
-        setError('Invalid password.');
-      }
-    } else {
-      // No matching user
+    // Find user by email
+    const user = users.find((u) => u.email.trim().toLowerCase() === email.trim().toLowerCase());
+
+    if (!user) {
       setError('Invalid email.');
+      console.log('User not found.');
+      return;
     }
+
+    // Check if the password matches
+    if (user.password !== password) {
+      setError('Invalid password.');
+      console.log('Password does not match.');
+      return;
+    }
+
+    // Successful login
+    localStorage.setItem('user', JSON.stringify({ email: user.email }));
+    setError('');
+    console.log('Login successful. Redirecting to dashboard...');
+    navigate('/dashboard');
   };
 
   return (
@@ -83,3 +85,4 @@ const Login = () => {
 };
 
 export default Login;
+
