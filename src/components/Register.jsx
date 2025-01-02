@@ -3,42 +3,42 @@ import { useNavigate } from 'react-router-dom';
 import './Auth.css';
 
 const Register = () => {
-  const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleRegister = (e) => {
     e.preventDefault();
 
-    if (password !== confirmPassword) {
-      setError('Passwords do not match!');
+    // Retrieve users from localStorage
+    const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
+
+    // Check if user already exists
+    if (storedUsers.find((u) => u.email === email)) {
+      setError('Email already registered. Please login.');
+      setSuccess('');
       return;
     }
 
-    localStorage.setItem('user', JSON.stringify({ fullName, email }));
+    // Add new user to the users list
+    storedUsers.push({ email, password });
+    localStorage.setItem('users', JSON.stringify(storedUsers));
+
     setError('');
-    navigate('/login');
+    setSuccess('Registration successful! Redirecting to login...');
+    setTimeout(() => navigate('/login'), 2000); // Redirect after success
   };
 
   return (
     <div className="auth-page">
       <div className="auth-left">
-        <h1>Welcome to Our Community</h1>
-        <p>Sign up to explore the best tools and resources to bring your ideas to life.</p>
+        <h1>Welcome</h1>
       </div>
       <div className="auth-right">
-        <h2>Create Your Account</h2>
-        <form className="auth-form" onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="Full Name"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-            required
-          />
+        <h2>Create an Account</h2>
+        <form className="auth-form" onSubmit={handleRegister}>
           <input
             type="email"
             placeholder="Email"
@@ -53,28 +53,21 @@ const Register = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
           {error && <p className="error-message">{error}</p>}
+          {success && <p className="success-message">{success}</p>}
           <button type="submit">Register</button>
         </form>
         <p>
-          Already have an account?{' '}
-          <button
-            onClick={() => navigate('/login')}
-            className="link-button"
-          >
-            Login
-          </button>
+          Already Registered?{' '}
+          <a href="/login">Login Here</a>
         </p>
       </div>
     </div>
   );
+};
+
+export default Register;
+
 };
 
 export default Register;
