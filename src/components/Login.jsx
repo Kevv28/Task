@@ -8,33 +8,27 @@ const Login = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // Dummy user database
   const users = [
-    {
-      email: 'test@example.com',
-      password: 'password123',
-    },
-    {
-      email: 'user@example.com',
-      password: 'userpass',
-    },
+    { email: 'test@example.com', password: 'password123' },
+    { email: 'user@example.com', password: 'userpass' },
   ];
 
   const handleLogin = (e) => {
     e.preventDefault();
 
-    // Find user in the dummy database
+    const sanitizedEmail = email.trim();
+    const sanitizedPassword = password.trim();
+
     const user = users.find(
-      (u) => u.email === email && u.password === password
+      (u) => u.email.toLowerCase() === sanitizedEmail.toLowerCase() &&
+             u.password === sanitizedPassword
     );
 
     if (user) {
-      // If user exists and credentials match
-      localStorage.setItem('user', JSON.stringify({ email }));
-      setError(''); // Clear any previous error
-      navigate('/dashboard'); // Navigate to the dashboard
+      localStorage.setItem('user', JSON.stringify({ email: sanitizedEmail }));
+      setError('');
+      navigate('/dashboard');
     } else {
-      // If credentials are invalid
       setError('Invalid email or password.');
     }
   };
@@ -61,7 +55,7 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          {error && <p className="error-message">{error}</p>} {/* Display error */}
+          {error && <p className="error-message">{error}</p>}
           <div className="auth-options">
             <label>
               <input type="checkbox" /> Remember Me
@@ -72,9 +66,7 @@ const Login = () => {
         </form>
         <p>
           Not Registered Yet?{' '}
-          <a href="/register">
-            Create an account
-          </a>
+          <a href="/register">Create an account</a>
         </p>
       </div>
     </div>
